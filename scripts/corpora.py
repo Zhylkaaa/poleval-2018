@@ -6,7 +6,8 @@ and store them as flair BIO-tagged corpora.
 """
 
 from typing import List
-from flair.data import Sentence, TaggedCorpus, Token
+from flair.data import Sentence, Corpus, Token
+from flair.datasets import SentenceDataset
 
 def data_to_bio(labels_data, text, entities):
     tokens = text.split()
@@ -37,6 +38,6 @@ def read_group_file(path_to_file, entities):
     return sentences
 
 def read_group(entities):
-    sentences_dev = read_group_file('data/dev.tsv', entities)
-    sentences_train = read_group_file('data/train.tsv', entities)
-    return TaggedCorpus(sentences_train, sentences_dev, sentences_dev)
+    sentences_dev = SentenceDataset(read_group_file('data/dev.tsv', entities))
+    sentences_train = SentenceDataset(read_group_file('data/train.tsv', entities))
+    return Corpus(sentences_train, sentences_dev, sentences_dev)

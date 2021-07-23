@@ -9,8 +9,8 @@ as well as embeddings from forward and backward LMs with 2048 hidden states.
 from typing import List
 from flair.embeddings import StackedEmbeddings, CharLMEmbeddings, TokenEmbeddings
 from flair.models import SequenceTagger
-from flair.trainers import SequenceTaggerTrainer
-from flair.data import TaggedCorpus
+from flair.trainers import ModelTrainer
+from flair.data import Corpus
 
 from models import FORWARD_LM, BACKWARD_LM, GLOVE
 from embeddings import KeyedWordEmbeddings
@@ -26,17 +26,18 @@ embedding_types: List[TokenEmbeddings] = [
 embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
 
 for entities in GROUPS:
-    corpus: TaggedCorpus = read_group(entities)
+    corpus: Corpus = read_group(entities)
     tag_dictionary = corpus.make_tag_dictionary(tag_type='ner')
     tagger: SequenceTagger = SequenceTagger(hidden_size=512,
                                             embeddings=embeddings,
                                             tag_dictionary=tag_dictionary,
                                             tag_type='ner',
                                             use_crf=True)
-    trainer: SequenceTaggerTrainer = SequenceTaggerTrainer(tagger, corpus, test_mode=True)
+    trainer: ModelTrainer = ModelTrainer(tagger, corpus)
     file_name = '-'.join(entities)
     trainer.train(f'data/models/{file_name}',
                    learning_rate=0.05,
                    mini_batch_size=124,
+                   monitor_test=True,
                    max_epochs=40,
                    save_model=True)
