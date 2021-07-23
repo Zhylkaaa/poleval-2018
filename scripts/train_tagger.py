@@ -7,7 +7,7 @@ as well as embeddings from forward and backward LMs with 2048 hidden states.
 """
 
 from typing import List
-from flair.embeddings import StackedEmbeddings, CharLMEmbeddings, TokenEmbeddings
+from flair.embeddings import StackedEmbeddings, CharLMEmbeddings, TokenEmbeddings, FlairEmbeddings
 from flair.models import SequenceTagger
 from flair.trainers import ModelTrainer
 from flair.data import Corpus
@@ -19,8 +19,8 @@ from corpora import read_group
 
 embedding_types: List[TokenEmbeddings] = [
     KeyedWordEmbeddings(GLOVE),
-    CharLMEmbeddings(FORWARD_LM),
-    CharLMEmbeddings(BACKWARD_LM)
+    FlairEmbeddings(FORWARD_LM), #CharLMEmbeddings(FORWARD_LM),
+    FlairEmbeddings(BACKWARD_LM) #CharLMEmbeddings(BACKWARD_LM)
 ]
 
 embeddings: StackedEmbeddings = StackedEmbeddings(embeddings=embedding_types)
@@ -39,5 +39,4 @@ for entities in GROUPS:
                    learning_rate=0.05,
                    mini_batch_size=124,
                    monitor_test=True,
-                   max_epochs=40,
-                   save_model=True)
+                   max_epochs=40)
