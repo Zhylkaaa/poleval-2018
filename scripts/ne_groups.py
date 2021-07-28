@@ -8,8 +8,6 @@ in order to exploit the potential of linear CRF chain.
 """
 
 GROUPS = (['persName'],
-          ['time', 'date', 'placeName_settlement'],
           ['orgName'],
           ['geogName', 'placeName'],
-          ['placeName_bloc', 'placeName_region', 'placeName_country', 'placeName_district'],
-          ['persName_addName', 'persName_forename', 'persName_surname'])
+          ['placeName_bloc', 'placeName_region', 'placeName_country', 'placeName_district', 'placeName_settlement'],)

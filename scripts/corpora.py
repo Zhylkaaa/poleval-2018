@@ -9,6 +9,7 @@ from typing import List
 from flair.data import Sentence, Corpus, Token
 from flair.datasets import SentenceDataset
 
+
 def data_to_bio(labels_data, text, entities):
     tokens = text.split()
     labels = ['O'] * len(tokens)
@@ -24,6 +25,7 @@ def data_to_bio(labels_data, text, entities):
             labels[int(id)-1] = f'{pref}{single[0]}'
     return labels, tokens
 
+
 def read_group_file(path_to_file, entities):
     sentences: List[Sentence] = []
     for line in open(path_to_file):
@@ -36,6 +38,7 @@ def read_group_file(path_to_file, entities):
             sentence.add_token(token)
         sentences.append(sentence)
     return sentences
+
 
 def read_group(entities):
     sentences_dev = SentenceDataset(read_group_file('data/dev.tsv', entities))
